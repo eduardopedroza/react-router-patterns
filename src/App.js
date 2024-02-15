@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Link } from 'react-router-dom';
+import axios from 'axios'
+import { v4 as uuid } from "uuid";
+
 import './App.css';
+import MyRoutes from './MyRoutes';
 
 function App() {
+  const defaultColors = [
+    { id: 1, name: "Red", color: "#FF0000" },
+    { id: 2, name: "Green", color: "#00FF00" },
+    { id: 3, name: "Blue", color: "#0000FF" },
+  ];
+
+  const [colors, setColors] = useState(defaultColors);
+
+  const addColor = color => {
+    let newColor = { ...color, id: uuid()};
+    setColors(colors => [...colors, newColor])
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <div className='header'>
+          <h1>WELCOME TO THE COLOR FACTORY</h1>
+          <Link to='/colors/new'>Add a color</Link>
+        </div>
+        <div className='colors'>
+          <MyRoutes colors={colors} addColor={addColor}/>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
